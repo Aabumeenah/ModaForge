@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ModaForge - Luxury Modest Digital Fashion Atelier</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              emerald: '#1B4332',
+              emeraldDark: '#081C15',
+              emeraldLight: '#2D6A4F',
+              sage: '#40916C',
+              sageLight: '#74C69D',
+              champagne: '#D4AF37',
+              champagneLight: '#F3E5AB',
+              burgundy: '#800020',
+              ivory: '#F8F9FA',
+              ivoryCard: '#FFFFFF',
+              darkBg: '#0D1F17'
+            }
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F8F9FA;
+      color: #081C15;
+    }
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #F8F9FA;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #40916C;
+      border-radius: 9999px;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sidebar-transition {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden bg-brand-ivory text-brand-emeraldDark">
+
+  <header class="h-16 bg-brand-emerald text-white flex items-center justify-between px-4 md:px-6 shadow-lg z-30 flex-shrink-0 border-b border-brand-champagne/30">
+    <div class="flex items-center gap-3">
+      <button id="sidebarToggleBtn" class="lg:hidden p-2 rounded-lg hover:bg-brand-emeraldLight transition" aria-label="Toggle Navigation">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-champagne to-amber-200 flex items-center justify-center text-brand-emeraldDark font-serif-title font-bold text-xl shadow-inner border border-white/20">M</div>
+        <div>
+          <h1 class="font-serif-title text-lg md:text-xl font-bold tracking-wider gold-gradient-text">MODAFORGE</h1>
+          <p class="text-[9px] text-brand-champagneLight tracking-widest uppercase hidden sm:block">Emerald Couture • Bespoke Atelier Suite</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="bg-brand-emeraldDark/70 border border-brand-champagne/40 rounded-full px-3 py-1 flex items-center gap-2 text-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="modeDisplay" class="text-brand-champagneLight font-medium">Bespoke Atelier Active</span>
+      </div>
+      <button id="quickSaveBtn" class="bg-gradient-to-r from-brand-champagne via-amber-300 to-brand-champagne hover:from-amber-200 hover:to-brand-champagne text-brand-emeraldDark font-bold text-xs md:text-sm px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 border border-white/30">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+        <span class="hidden sm:inline">Save Atelier Brief</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <aside id="sidebar" class="sidebar-transition absolute lg:static inset-y-0 left-0 w-64 bg-brand-emeraldDark text-white flex flex-col z-20 -translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none border-r border-brand-emeraldLight/30">
+      <div class="p-4 border-b border-brand-emeraldLight/30">
+        <p class="text-[11px] font-bold uppercase tracking-wider text-brand-champagne">Atelier Workspaces</p>
+      </div>
+      <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+        <button data-target="design" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-brand-champagne bg-brand-emerald/90 border border-brand-champagne/40 shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          <span class="text-sm">1. Design Studio</span>
+        </button>
+        <button data-target="pattern" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-emerald-100 hover:bg-brand-emeraldLight/40 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <span class="text-sm">2. Pattern Studio</span>
+        </button>
+        <button data-target="restyle" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-emerald-100 hover:bg-brand-emeraldLight/40 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span class="text-sm">3. ReStyle Studio</span>
+        </button>
+        <button data-target="threed" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-emerald-100 hover:bg-brand-emeraldLight/40 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <span class="text-sm">4. 3D Mannequin</span>
+        </button>
+        <button data-target="academy" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-emerald-100 hover:bg-brand-emeraldLight/40 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <span class="text-sm">5. Fashion Academy</span>
+        </button>
+        <button data-target="library" class="nav-item w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left font-medium transition text-emerald-100 hover:bg-brand-emeraldLight/40 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <span class="text-sm">6. My Projects</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-brand-emeraldLight/30 bg-brand-emeraldDark/80 text-xs text-brand-champagneLight">
+        <p class="font-semibold text-white mb-0.5">Emerald Couture Vault</p>
+        <p class="text-[11px] text-emerald-300">Local state synced & ready.</p>
+      </div>
+    </aside>
+
+    <!-- Main Workspace View -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+
+      <section id="section-design" class="studio-section space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Interactive Canvas</span>
+            <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">Luxury Design Studio</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="resetDesignBtn" class="px-3.5 py-2 rounded-xl border border-brand-emerald/30 text-xs font-semibold text-brand-emerald hover:bg-brand-emerald/5 transition">Reset Draft</button>
+            <button id="exportBriefBtn" class="px-3.5 py-2 rounded-xl bg-brand-emerald text-white text-xs font-semibold hover:bg-brand-emeraldDark transition shadow-sm">Export Specification Brief</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Design Controls Column -->
+          <div class="lg:col-span-6 space-y-6">
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">1. Garment & Fabric Specification</h3>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Project Name</label>
+                  <input type="text" id="designName" value="Royal Emerald Abaya Edition" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Garment Type</label>
+                  <select id="garmentType" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                    <option value="abaya">Luxury Modest Abaya</option>
+                    <option value="adire_maxi">Custom Adire Maxi Gown</option>
+                    <option value="ankara_gown">Ankara Couture Evening Gown</option>
+                    <option value="blouse">Couture Tunic & Blouse</option>
+                    <option value="skirt">Flared Statement Skirt</option>
+                    <option value="trousers">Palazzo Trousers</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Fabric & Texture</label>
+                  <select id="fabricTexture" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                    <option value="emerald_velvet">Deep Emerald Silk Velvet</option>
+                    <option value="adire">Indigo / Champagne Adire Print</option>
+                    <option value="ankara">Ankara Wax Print Gold Motif</option>
+                    <option value="satin">Luxury Champagne Silk Satin</option>
+                    <option value="crepe">Heavy Silk Crepe</option>
+                    <option value="chiffon">Flowing Modest Chiffon</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Primary Color</label>
+                  <div class="flex items-center gap-2">
+                    <input type="color" id="baseColor" value="#1B4332" class="w-10 h-9 rounded-lg border-0 cursor-pointer">
+                    <span id="baseColorHex" class="text-xs font-mono text-gray-600">#1B4332</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">2. Silhouette Cut & Styling Options</h3>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Sleeve Cut</label>
+                  <select id="sleeveStyle" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                    <option value="long">Traditional Long Sleeve</option>
+                    <option value="bishop">Statement Bishop Sleeve</option>
+                    <option value="puff">Voluminous Puff Sleeve</option>
+                    <option value="bell">Flared Bell Sleeve</option>
+                    <option value="cape">Modest Draped Cape</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Neckline</label>
+                  <select id="necklineStyle" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                    <option value="mandarin">High Mandarin Collar</option>
+                    <option value="round">Classic High Round</option>
+                    <option value="vneck">Modest V-Neck</option>
+                    <option value="cowl">Draped Cowl Neck</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Length</label>
+                  <select id="garmentLength" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+                    <option value="floor">Floor-Length Maxi</option>
+                    <option value="midi">Sophisticated Midi</option>
+                    <option value="short">Tunic / Short</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Champagne Gold Embroidery Details</label>
+                <input type="text" id="garmentDetails" placeholder="e.g. Burnished gold thread along placket and sleeve cuffs" class="w-full px-3.5 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-sage focus:outline-none bg-white">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Mood / Reference Photo</label>
+                <input type="file" id="referenceUpload" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-emerald/10 file:text-brand-emerald hover:file:bg-brand-emerald/20 cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <!-- Vector SVG Canvas Column -->
+          <div class="lg:col-span-6 flex flex-col gap-4">
+            <div class="glass-card p-6 rounded-2xl shadow-sm flex-1 flex flex-col items-center justify-center relative min-h-[420px] bg-gradient-to-b from-white to-brand-ivory overflow-hidden">
+              <span class="absolute top-4 left-4 text-xs font-bold uppercase tracking-wider text-brand-champagne">Dynamic Vector Preview</span>
+              
+              <!-- Dynamic Render Container -->
+              <div id="svgPreviewContainer" class="w-full max-w-[320px] h-[380px] flex items-center justify-center transition-all duration-300">
+                <!-- SVG JavaScript Generated -->
+              </div>
+
+              <div id="referenceImagePreviewContainer" class="hidden absolute bottom-4 right-4 w-20 h-24 rounded-lg border-2 border-brand-champagne overflow-hidden shadow-lg bg-white">
+                <img id="referenceImg" src="" alt="Mood Reference" class="w-full h-full object-cover">
+              </div>
+            </div>
+            
+            <div class="p-4 bg-brand-emerald text-white rounded-2xl flex items-center justify-between text-xs border border-brand-champagne/30 shadow-sm">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-champagne"></span>
+                <span>Active Fabric: <strong id="activeFabricLabel" class="text-brand-champagneLight">EMERALD SILK VELVET</strong></span>
+              </div>
+              <span id="activeStyleSummary" class="text-emerald-200 font-mono">FLOOR-LENGTH • LONG SLEEVES</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-pattern" class="studio-section hidden space-y-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Bespoke Fitting Worksheet</span>
+          <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">Pattern Drafting Studio</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7 space-y-6">
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <div class="flex items-center justify-between border-b border-brand-champagne/30 pb-3">
+                <h3 class="font-serif-title text-lg font-bold text-brand-emerald">Client Body Measurements</h3>
+                <div class="flex items-center gap-2 bg-gray-100 p-1 rounded-xl">
+                  <button id="unitCm" class="px-3 py-1 text-xs font-bold rounded-lg bg-white text-brand-emerald shadow-xs">CM</button>
+                  <button id="unitInches" class="px-3 py-1 text-xs font-bold rounded-lg text-gray-500 hover:text-brand-emerald">INCHES</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Full Bust</label>
+                  <input type="number" id="mBust" value="96" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Waist</label>
+                  <input type="number" id="mWaist" value="78" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Full Hip</label>
+                  <input type="number" id="mHip" value="104" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Shoulder Width</label>
+                  <input type="number" id="mShoulder" value="40" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Sleeve Length</label>
+                  <input type="number" id="mSleeve" value="60" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Full Garment Length</label>
+                  <input type="number" id="mLength" value="145" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage bg-white">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Ease Allowance Silhouette</label>
+                  <select id="easeAllowance" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
+                    <option value="2">Close Fit (+2 cm ease)</option>
+                    <option value="4" selected>Regular Fitted (+4 cm ease)</option>
+                    <option value="8">Modest Relaxed (+8 cm ease)</option>
+                    <option value="12">Oversized Flowing (+12 cm ease)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-700">Client Profile Name</label>
+                  <input type="text" id="clientName" value="Princess Zara - Bespoke" class="w-full mt-1 px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
+                </div>
+              </div>
+
+              <div class="flex gap-3 pt-2">
+                <button id="calculatePatternBtn" class="flex-1 bg-brand-emerald text-white font-semibold text-xs py-2.5 rounded-xl hover:bg-brand-emeraldDark transition shadow-sm">Calculate Pattern Blocks</button>
+                <button id="saveProfileBtn" class="px-4 bg-brand-champagne text-brand-emeraldDark font-bold text-xs py-2.5 rounded-xl hover:bg-amber-300 transition shadow-sm">Save Client</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Drafting Results Display -->
+          <div class="lg:col-span-5">
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">Pattern Block Calculations</h3>
+              <div id="patternResults" class="space-y-3 text-xs">
+                <!-- Calculated via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-restyle" class="studio-section hidden space-y-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Sustainable Upcycling</span>
+          <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">ReStyle Studio</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-6 space-y-6">
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">Upcycling Planner</h3>
+              
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Source Garment / Material</label>
+                <select id="restyleSource" class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-sm bg-white">
+                  <option value="old_abaya">Plain Vintage Abaya</option>
+                  <option value="ankara_remnants">Ankara Fabric Remnants (3 Yards)</option>
+                  <option value="oversized_shirt">Men's Oversized Linen Shirt</option>
+                  <option value="silk_dress">Pre-loved Silk Maxi Gown</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Transformation Goal</label>
+                <select id="restyleGoal" class="w-full px-3.5 py-2 border border-gray-200 rounded-xl text-sm bg-white">
+                  <option value="modest_abaya">Emerald Gold-Trimmed Abaya</option>
+                  <option value="twopiece">Statement Two-Piece Ensemble</option>
+                  <option value="maxi_gown">Adire Patchwork Maxi Gown</option>
+                  <option value="kimono">Couture Layered Kimono</option>
+                </select>
+              </div>
+
+              <button id="generateRestylePlanBtn" class="w-full bg-brand-emerald text-white font-semibold text-xs py-3 rounded-xl hover:bg-brand-emeraldDark transition shadow-md">Generate Upcycling Blueprint</button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <div id="restylePlanOutput" class="glass-card p-6 rounded-2xl shadow-sm min-h-[300px] space-y-4">
+              <div class="text-center text-gray-400 py-12">
+                <svg class="w-12 h-12 mx-auto mb-2 opacity-50 text-brand-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <p class="text-sm">Select source materials and tap 'Generate Upcycling Blueprint' to view steps.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-threed" class="studio-section hidden space-y-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Interactive Visualization</span>
+          <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">3D Virtual Mannequin Stage</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 glass-card p-6 rounded-2xl shadow-sm flex flex-col items-center justify-center relative min-h-[460px] bg-gradient-to-b from-brand-emeraldDark to-gray-900 text-white overflow-hidden border border-brand-champagne/30">
+            <div id="threeDStage" class="w-full h-80 flex items-center justify-center transition-all duration-300">
+              <div id="mannequinBody" class="w-36 h-72 relative flex flex-col items-center transition-transform duration-200" style="transform: rotateY(0deg);">
+                <div class="w-12 h-14 bg-amber-100/90 rounded-t-full border border-brand-champagne/40 mb-1"></div>
+                <div id="threeDGarmentMesh" class="w-28 h-56 rounded-b-3xl bg-brand-emerald border-2 border-brand-champagne shadow-2xl transition-all duration-300 flex items-center justify-center text-xs font-serif-title text-brand-champagneLight text-center p-2">
+                  Royal Emerald Silhouette
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full max-w-md space-y-3 mt-4 bg-brand-emeraldDark/90 p-4 rounded-xl border border-brand-champagne/30">
+              <div class="flex justify-between text-xs">
+                <span class="text-gray-300">Rotation Angle</span>
+                <span id="rotationVal" class="text-brand-champagne font-mono">0°</span>
+              </div>
+              <input type="range" id="rotationSlider" min="-180" max="180" value="0" class="w-full accent-brand-champagne">
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 space-y-4">
+            <div class="glass-card p-5 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">3D Stage Sync</h3>
+              <button id="sync3DBtn" class="w-full bg-brand-champagne text-brand-emeraldDark font-bold text-xs py-3 rounded-xl hover:bg-amber-300 transition shadow-sm">Sync Active Design Canvas</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-academy" class="studio-section hidden space-y-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Couture Masterclasses</span>
+          <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">Fashion Academy</h2>
+        </div>
+
+        <div id="academyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <section id="section-library" class="studio-section hidden space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-brand-sage">Local Vault</span>
+            <h2 class="font-serif-title text-2xl md:text-3xl font-bold text-brand-emeraldDark">My Projects</h2>
+          </div>
+          <input type="text" id="librarySearch" placeholder="Search saved projects..." class="px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-sage w-full md:w-64 bg-white">
+        </div>
+
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated via LocalStorage JS -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 bg-brand-emeraldDark text-white px-5 py-3 rounded-2xl shadow-2xl border border-brand-champagne/40 flex items-center gap-3 translate-y-24 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <span class="w-2.5 h-2.5 rounded-full bg-brand-champagne animate-ping"></span>
+    <span id="toastMsg" class="text-xs font-medium">Notification message</span>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      "use strict";
+
+      const STORAGE_KEY = "modaforge_emerald_couture_v1";
+      let projects = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+      // App state
+      const state = {
+        name: "Royal Emerald Abaya Edition",
+        garment: "abaya",
+        fabric: "emerald_velvet",
+        color: "#1B4332",
+        sleeve: "long",
+        neckline: "mandarin",
+        length: "floor",
+        details: "Burnished champagne gold embroidery",
+        unit: "cm"
+      };
+
+      // Toast Notification Helper
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        const toastMsg = document.getElementById("toastMsg");
+        toastMsg.textContent = msg;
+        toast.classList.remove("translate-y-24", "opacity-0", "pointer-events-none");
+        setTimeout(() => {
+          toast.classList.add("translate-y-24", "opacity-0", "pointer-events-none");
+        }, 3000);
+      }
+
+      // Sidebar Toggle
+      const sidebar = document.getElementById("sidebar");
+      document.getElementById("sidebarToggleBtn").addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
+
+      // Navigation Section Switching
+      document.querySelectorAll(".nav-item").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.target;
+          document.querySelectorAll(".studio-section").forEach(sec => sec.classList.add("hidden"));
+          document.getElementById(`section-${target}`).classList.remove("hidden");
+
+          document.querySelectorAll(".nav-item").forEach(i => {
+            i.classList.remove("text-brand-champagne", "bg-brand-emerald/90", "border", "border-brand-champagne/40", "shadow-sm");
+            i.classList.add("text-emerald-100");
+          });
+          btn.classList.add("text-brand-champagne", "bg-brand-emerald/90", "border", "border-brand-champagne/40", "shadow-sm");
+          btn.classList.remove("text-emerald-100");
+
+          if (window.innerWidth < 1024) {
+            sidebar.classList.add("-translate-x-full");
+          }
+        });
+      });
+
+      // SVG Vector Renderer
+      function renderSVG() {
+        const color = state.color;
+        const isAdire = state.fabric === 'adire';
+        const isAnkara = state.fabric === 'ankara';
+        
+        let strokeColor = "#D4AF37";
+        let patternMarkup = "";
+
+        if (isAdire) {
+          patternMarkup = `
+            <pattern id="adirePatt" width="20" height="20" patternUnits="userSpaceOnUse">
+              <rect width="20" height="20" fill="${color}"/>
+              <circle cx="10" cy="10" r="4" fill="#D4AF37" opacity="0.6"/>
+              <path d="M0 0L20 20M20 0L0 20" stroke="#74C69D" stroke-width="1" opacity="0.4"/>
+            </pattern>`;
+        } else if (isAnkara) {
+          patternMarkup = `
+            <pattern id="ankaraPatt" width="30" height="30" patternUnits="userSpaceOnUse">
+              <rect width="30" height="30" fill="${color}"/>
+              <path d="M15 0 L30 15 L15 30 L0 15 Z" fill="#D4AF37" opacity="0.7"/>
+              <circle cx="15" cy="15" r="4" fill="#800020"/>
+            </pattern>`;
+        }
+
+        const fillAttr = isAdire ? "url(#adirePatt)" : isAnkara ? "url(#ankaraPatt)" : color;
+
+        let sleevePath = "";
+        if (state.sleeve === "long") {
+          sleevePath = `<path d="M45 100 L15 220 L35 220 L60 120 Z M205 100 L235 220 L215 220 L190 120 Z" fill="${fillAttr}" stroke="${strokeColor}" stroke-width="1.2"/>`;
+        } else if (state.sleeve === "puff") {
+          sleevePath = `<path d="M45 100 Q10 130 50 150 L60 120 Z M205 100 Q240 130 200 150 L190 120 Z" fill="${fillAttr}" stroke="${strokeColor}" stroke-width="1.2"/>`;
+        } else if (state.sleeve === "bishop") {
+          sleevePath = `<path d="M45 100 Q0 180 30 230 L45 230 L60 120 Z M205 100 Q250 180 220 230 L205 230 L190 120 Z" fill="${fillAttr}" stroke="${strokeColor}" stroke-width="1.2"/>`;
+        }
+
+        let lengthY = state.length === "floor" ? 360 : state.length === "midi" ? 280 : 220;
+
+        const svgHtml = `
+          <svg viewBox="0 0 250 380" class="w-full h-full drop-shadow-xl">
+            <defs>${patternMarkup}</defs>
+            <!-- Sleeves -->
+            ${sleevePath}
+            <!-- Main Silhouette Body -->
+            <path d="M70 80 Q125 65 180 80 L190 120 Q160 180 175 ${lengthY} L75 ${lengthY} Q90 180 60 120 Z" fill="${fillAttr}" stroke="${strokeColor}" stroke-width="1.5"/>
+            <!-- Neckline -->
+            <path d="M100 80 Q125 105 150 80" fill="none" stroke="#D4AF37" stroke-width="2"/>
+            <!-- Champagne Gold Embroidery Line -->
+            <line x1="125" y1="95" x2="125" y2="200" stroke="#D4AF37" stroke-width="2.5" stroke-dasharray="4 2"/>
+          </svg>`;
+
+        document.getElementById("svgPreviewContainer").innerHTML = svgHtml;
+        document.getElementById("activeFabricLabel").textContent = state.fabric.toUpperCase().replace('_', ' ');
+        document.getElementById("activeStyleSummary").textContent = `${state.length.toUpperCase()} • ${state.sleeve.toUpperCase()}`;
+      }
+
+      // Event Listeners for Design Inputs
+      document.getElementById("designName").addEventListener("input", (e) => state.name = e.target.value);
+      document.getElementById("garmentType").addEventListener("change", (e) => { state.garment = e.target.value; renderSVG(); });
+      document.getElementById("fabricTexture").addEventListener("change", (e) => { state.fabric = e.target.value; renderSVG(); });
+      document.getElementById("baseColor").addEventListener("input", (e) => {
+        state.color = e.target.value;
+        document.getElementById("baseColorHex").textContent = e.target.value.toUpperCase();
+        renderSVG();
+      });
+      document.getElementById("sleeveStyle").addEventListener("change", (e) => { state.sleeve = e.target.value; renderSVG(); });
+      document.getElementById("necklineStyle").addEventListener("change", (e) => { state.neckline = e.target.value; renderSVG(); });
+      document.getElementById("garmentLength").addEventListener("change", (e) => { state.length = e.target.value; renderSVG(); });
+
+      // Reference Photo Upload
+      document.getElementById("referenceUpload").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            document.getElementById("referenceImg").src = evt.target.result;
+            document.getElementById("referenceImagePreviewContainer").classList.remove("hidden");
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Pattern Drafting Calculations
+      function calculatePattern() {
+        const bust = parseFloat(document.getElementById("mBust").value) || 0;
+        const waist = parseFloat(document.getElementById("mWaist").value) || 0;
+        const hip = parseFloat(document.getElementById("mHip").value) || 0;
+        const ease = parseFloat(document.getElementById("easeAllowance").value) || 0;
+        const unit = state.unit;
+
+        const qBust = ((bust + ease) / 4).toFixed(1);
+        const qWaist = ((waist + ease) / 4).toFixed(1);
+        const qHip = ((hip + ease) / 4).toFixed(1);
+
+        document.getElementById("patternResults").innerHTML = `
+          <div class="p-3.5 bg-white rounded-xl border border-gray-200 shadow-2xs space-y-2">
+            <div class="flex justify-between font-semibold text-brand-emerald">
+              <span>Quarter Bust Block:</span>
+              <span class="font-mono text-brand-burgundy">${qBust} ${unit}</span>
+            </div>
+            <div class="flex justify-between font-semibold text-brand-emerald">
+              <span>Quarter Waist Block:</span>
+              <span class="font-mono text-brand-burgundy">${qWaist} ${unit}</span>
+            </div>
+            <div class="flex justify-between font-semibold text-brand-emerald">
+              <span>Quarter Hip Block:</span>
+              <span class="font-mono text-brand-burgundy">${qHip} ${unit}</span>
+            </div>
+          </div>
+          <div class="p-3 bg-brand-emerald/5 rounded-xl border border-brand-emerald/10 text-brand-emerald text-xs leading-relaxed">
+            <p><strong>Fabric Meterage Recommendation:</strong> Approx. 3.8 Yards (150cm width) for flared modest floor-length silhouette with sleeves.</p>
+          </div>`;
+      }
+
+      document.getElementById("calculatePatternBtn").addEventListener("click", () => {
+        calculatePattern();
+        showToast("Pattern drafting calculations updated.");
+      });
+
+      // Unit toggle listeners
+      document.getElementById("unitCm").addEventListener("click", () => {
+        state.unit = "cm";
+        document.getElementById("unitCm").classList.add("bg-white", "text-brand-emerald");
+        document.getElementById("unitInches").classList.remove("bg-white", "text-brand-emerald");
+        calculatePattern();
+      });
+      document.getElementById("unitInches").addEventListener("click", () => {
+        state.unit = "in";
+        document.getElementById("unitInches").classList.add("bg-white", "text-brand-emerald");
+        document.getElementById("unitCm").classList.remove("bg-white", "text-brand-emerald");
+        calculatePattern();
+      });
+
+      // Restyle Blueprint Generation
+      document.getElementById("generateRestylePlanBtn").addEventListener("click", () => {
+        document.getElementById("restylePlanOutput").innerHTML = `
+          <h3 class="font-serif-title text-lg font-bold text-brand-emerald border-b border-brand-champagne/30 pb-2">Upcycling Blueprint</h3>
+          <div class="space-y-3 text-xs text-gray-700">
+            <p><strong>Step 1: Deconstruction</strong><br>Unpick sleeve armholes and neckline facing carefully.</p>
+            <p><strong>Step 2: Champagne Gold Trim Fitting</strong><br>Baste stitch burnished gold metallic trim along center-front placket.</p>
+            <p><strong>Step 3: Finishing</strong><br>Finish inner seams with French seam technique for luxury durability.</p>
+          </div>`;
+        showToast("Upcycling plan generated!");
+      });
+
+      // 3D Mannequin Rotation
+      document.getElementById("rotationSlider").addEventListener("input", (e) => {
+        const val = e.target.value;
+        document.getElementById("rotationVal").textContent = `${val}°`;
+        document.getElementById("mannequinBody").style.transform = `rotateY(${val}deg)`;
+      });
+
+      document.getElementById("sync3DBtn").addEventListener("click", () => {
+        const mesh = document.getElementById("threeDGarmentMesh");
+        mesh.style.backgroundColor = state.color;
+        mesh.textContent = `${state.name}`;
+        showToast("3D Stage synced with active design!");
+      });
+
+      // Fashion Academy Modules
+      const modules = [
+        { title: "French Seams & Modest Finishing", desc: "Master durable enclosed seam finishing for luxury abayas." },
+        { title: "Bespoke Fitting & Measurement", desc: "Learn accurate posture checks and modest ease calculations." },
+        { title: "Metallic Embroidery Techniques", desc: "Guide to applying champagne gold thread along silk velvet." }
+      ];
+
+      document.getElementById("academyGrid").innerHTML = modules.map(m => `
+        <div class="glass-card p-5 rounded-2xl shadow-sm space-y-3 border-t-2 border-brand-champagne">
+          <h3 class="font-serif-title font-bold text-brand-emerald">${m.title}</h3>
+          <p class="text-xs text-gray-600">${m.desc}</p>
+          <button class="w-full py-2.5 rounded-xl bg-brand-emerald/10 text-brand-emerald text-xs font-semibold hover:bg-brand-emerald hover:text-white transition" onclick="showToast('Academy module selected.')">Start Module</button>
+        </div>
+      `).join("");
+
+      // Save & LocalStorage Management
+      function saveProject() {
+        const newProj = {
+          id: Date.now(),
+          name: state.name,
+          garment: state.garment,
+          fabric: state.fabric,
+          color: state.color,
+          date: new Date().toLocaleDateString()
+        };
+        projects.unshift(newProj);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+        renderProjects();
+        showToast("Project saved to Local Vault!");
+      }
+
+      function renderProjects() {
+        const grid = document.getElementById("projectsGrid");
+        if (projects.length === 0) {
+          grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-gray-400">No saved projects found in local vault.</div>`;
+          return;
+        }
+        grid.innerHTML = projects.map(p => `
+          <div class="glass-card p-4 rounded-2xl shadow-sm space-y-2 border-l-4" style="border-left-color: ${p.color}">
+            <h4 class="font-bold text-sm text-brand-emerald">${p.name}</h4>
+            <p class="text-xs text-gray-500">${p.garment.toUpperCase()} • ${p.fabric.replace('_', ' ')}</p>
+            <span class="text-[10px] text-gray-400">${p.date}</span>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("quickSaveBtn").addEventListener("click", saveProject);
+
+      // Initial Execution
+      renderSVG();
+      calculatePattern();
+      renderProjects();
+    });
+  </script>
+</body>
+</html>
